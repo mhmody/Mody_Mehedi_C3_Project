@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,5 +87,38 @@ class RestaurantTest {
         restaurant.addToMenu("Sweet corn soup",119);
         restaurant.addToMenu("Vegetable lasagne", 269);
         return restaurant;
+    }
+
+    @Test
+    public void Calculate_Price_of_the_selectedMenu_with_name() {
+        LocalTime openingTime = LocalTime.parse("10:30:00");
+        LocalTime closingTime = LocalTime.parse("22:00:00");
+
+        List<Item> lstItems = new ArrayList<Item>();
+
+        List<String> lstItemsSingle = new ArrayList<String>();
+        lstItemsSingle.add("Test Menu Item 1");
+
+        List<String> lstItemsMultiple = new ArrayList<String>();
+        lstItemsMultiple.add("Test Menu Item 2");
+        lstItemsMultiple.add("Test Menu Item 3");
+
+        List<String> lstItemsMultipleSecond = new ArrayList<String>();
+        lstItemsMultipleSecond.add("Test Menu Item 4");
+        lstItemsMultipleSecond.add("Test Menu Item 5");
+        lstItemsMultipleSecond.add("Test Menu Item 1");
+
+        restaurant = new Restaurant("Testing cafe", "GPU", openingTime, closingTime);
+        restaurant.addToMenu("Test Menu Item 1", 119);
+        restaurant.addToMenu("Test Menu Item 2", 223);
+        restaurant.addToMenu("Test Menu Item 3", 228);
+        restaurant.addToMenu("Test Menu Item 4", 143);
+        restaurant.addToMenu("Test Menu Item 5", 197);
+
+
+        assertEquals(119, restaurant.getPriceOfSelectedItems(lstItemsSingle));
+        assertEquals(223 + 228, restaurant.getPriceOfSelectedItems(lstItemsMultiple));
+        assertNotEquals(223 + 228 + 1, restaurant.getPriceOfSelectedItems(lstItemsMultiple));
+        assertNotEquals(143 + 197 + 119, restaurant.getPriceOfSelectedItems(lstItemsMultiple));
     }
 }
