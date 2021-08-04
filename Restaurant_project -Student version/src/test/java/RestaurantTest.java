@@ -1,15 +1,22 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
+
 class RestaurantTest {
+
     Restaurant restaurant;
+
     //REFACTOR ALL THE REPEATED LINES OF CODE
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>OPEN/CLOSED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -40,7 +47,6 @@ class RestaurantTest {
     @Test
     public void adding_item_to_menu_should_increase_menu_size_by_1(){
         Restaurant restaurant = getRestaurant();
-
         int initialMenuSize = restaurant.getMenu().size();
         restaurant.addToMenu("Sizzling brownie",319);
         assertEquals(initialMenuSize+1,restaurant.getMenu().size());
@@ -48,46 +54,20 @@ class RestaurantTest {
     @Test
     public void removing_item_from_menu_should_decrease_menu_size_by_1() throws itemNotFoundException {
         Restaurant restaurant = getRestaurant();
-
         int initialMenuSize = restaurant.getMenu().size();
         restaurant.removeFromMenu("Vegetable lasagne");
         assertEquals(initialMenuSize-1,restaurant.getMenu().size());
     }
     @Test
     public void removing_item_that_does_not_exist_should_throw_exception() {
-        Restaurant restaurant = getRestaurant();
 
+        Restaurant restaurant = getRestaurant();
         assertThrows(itemNotFoundException.class,
                 ()->restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    //<<<<<<<<<<<<<<<<<<<<<<<Name Verify>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    @Test
-    public void Search_for_existing_restaurant_should_return_expected_restaurant_object()
-    {
-        Restaurant restaurant = getRestaurant();
-
-        assertEquals("Amelie's cafe", restaurant.getName());
-    }
-
-    @Test
-    public void search_for_non_existing_restaurant_should_throw_exception()
-    {
-        Restaurant restaurant = getRestaurant();
-
-        assertNotEquals("Random Value", restaurant.getName());
-    }
-    //<<<<<<<<<<<<<<<<<<<<<<<Name Verify>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    public Restaurant getRestaurant()
-    {
-        LocalTime openingTime = LocalTime.parse("10:30:00");
-        LocalTime closingTime = LocalTime.parse("22:00:00");
-        restaurant =new Restaurant("Amelie's cafe","Chennai",openingTime,closingTime);
-        restaurant.addToMenu("Sweet corn soup",119);
-        restaurant.addToMenu("Vegetable lasagne", 269);
-        return restaurant;
-    }
+    //<<<<<<<<<<<<<<<<<<<<<<<Price Calculation>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     @Test
     public void Calculate_Price_of_the_selectedMenu_with_name() {
@@ -120,5 +100,25 @@ class RestaurantTest {
         assertEquals(223 + 228, restaurant.getPriceOfSelectedItems(lstItemsMultiple));
         assertNotEquals(223 + 228 + 1, restaurant.getPriceOfSelectedItems(lstItemsMultiple));
         assertNotEquals(143 + 197 + 119, restaurant.getPriceOfSelectedItems(lstItemsMultiple));
+    }
+    //<<<<<<<<<<<<<<<<<<<<<<<Price Calculation>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<<<<Name Verify>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @Test
+    public void search_for_existing_restaurant_should_return_expected_restaurant_object()
+    {
+        Restaurant restaurant = getRestaurant();
+        assertEquals("Amelie's cafe", restaurant.getName());
+    }
+    //<<<<<<<<<<<<<<<<<<<<<<<Name Verify>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    public Restaurant getRestaurant()
+    {
+        LocalTime openingTime = LocalTime.parse("10:30:00");
+        LocalTime closingTime = LocalTime.parse("22:00:00");
+        restaurant =new Restaurant("Amelie's cafe","Chennai",openingTime,closingTime);
+        restaurant.addToMenu("Sweet corn soup",119);
+        restaurant.addToMenu("Vegetable lasagne", 269);
+        return restaurant;
     }
 }

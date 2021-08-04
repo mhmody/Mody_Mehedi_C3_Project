@@ -6,6 +6,8 @@ public class RestaurantService {
     private static List<Restaurant> restaurants = new ArrayList<>();
 
     public Restaurant findRestaurantByName(String restaurantName) throws restaurantNotFoundException {
+        //return null;
+        //DELETE ABOVE STATEMENT AND WRITE CODE HERE
         for(Restaurant r :  restaurants)
         {
             if(restaurantName == r.getName())
@@ -31,4 +33,6 @@ public class RestaurantService {
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }
+
+
 }
