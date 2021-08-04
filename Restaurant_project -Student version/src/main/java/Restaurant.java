@@ -63,4 +63,17 @@ public class Restaurant {
         return name;
     }
 
+    public int getPriceOfSelectedItems(List<String> lstMenuItems) {
+
+        int ValueOfSelectedMenuItems = 0;
+
+        for (String item : lstMenuItems) {
+            for (Item i : menu) {
+                if (i.getName() == item) {
+                    ValueOfSelectedMenuItems = ValueOfSelectedMenuItems + i.getPrice();
+                }
+            }
+        }
+        return ValueOfSelectedMenuItems;
+    }
 }
